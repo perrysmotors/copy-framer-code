@@ -3,7 +3,7 @@
     "identifier" : "com.gilesperry.copy-framer-code",
     "version" : "1.0",
     "description" : "Copy a layer to the clipboard as Framer code.",
-    "authorEmail" : "giles@gilesperry.info",
+    "homepage": "https://github.com/perrysmotors/copy-framer-code",
     "author" : "Giles Perry",
     "commands" : [
     {
