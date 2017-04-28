@@ -1,0 +1,17 @@
+{
+    "name" : "Copy Framer Code",
+    "identifier" : "com.gilesperry.copy-framer-code",
+    "version" : "1.0",
+    "description" : "Copy a layer to the clipboard as Framer code.",
+    "authorEmail" : "giles@gilesperry.info",
+    "author" : "Giles Perry",
+    "commands" : [
+    {
+      "script" : "copy-framer-code.js",
+      "handler" : "onRun",
+      "shortcut" : "",
+      "name" : "Copy Framer Code",
+      "identifier" : "copyframercode"
+    }
+  ]
+}
