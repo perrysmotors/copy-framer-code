@@ -228,7 +228,8 @@ function textLayerCode(layer) {
   var lineHeight = layer.lineHeight() / fontSize
   var color = layer.textColor()
   var textBehaviour = layer.textBehaviour()
-  var characterSpacing = Number(layer.characterSpacing());
+  var characterSpacing = layer.characterSpacing();
+  var characterSpacingNum = Number(characterSpacing).toFixed(1);
 
   var widthCode = ""
   // if text is fixed width
@@ -263,7 +264,7 @@ function textLayerCode(layer) {
 
   var letterSpacingCode = "";
   if (characterSpacing != null) {
-    letterSpacingCode = '\tletterSpacing: ' + characterSpacing.toFixed(1) + '\n';
+    letterSpacingCode = '\tletterSpacing: ' + characterSpacingNum + '\n';
   }
 
   var lineHeightCode = ""
