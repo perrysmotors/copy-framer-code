@@ -15,3 +15,5 @@ Download or clone the repository, and double click `CopyFramerCode.sketchplugin`
 1. Select the layers in Sketch you want to copy
 2. Select `Copy Framer Code > Copy Framer Code` from the Plugins menu
 3. Paste the CoffeeScript into Framer.
+
+![copytoframer](https://cloud.githubusercontent.com/assets/12557727/25554404/8a03fc14-2cc4-11e7-97ee-d460abf393a6.gif)
