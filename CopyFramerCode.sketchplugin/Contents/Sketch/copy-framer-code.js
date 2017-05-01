@@ -313,10 +313,19 @@ function layerCode(layer) {
 
 function camelize(str) {
   str = str.replace(/-/g, " ");
+  str = str.replace(/[^a-zA-Z0-9$_ ]/g, "")
+  str = str.trim();
+  if (firstCharIsInvalid(str)) {
+    str = "layer_" + str;
+  }
   return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
     if (+match === 0) return ""; // or if (/\s+/.test(match)) for white spaces
     return index == 0 ? match.toLowerCase() : match.toUpperCase();
   });
+}
+
+function firstCharIsInvalid(str) {
+  return str.charAt(0).match(/[^a-z$_]/i);
 }
 
 // Using JSTalk clipboard handling snippet from https://gist.github.com/uhunkler/5465857 by Urs Hunkler
