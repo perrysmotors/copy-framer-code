@@ -159,8 +159,8 @@ function getFontStyle(layer) {
 
 function layerWithPropertiesCode(layer) {
   var name = camelize(layer.name());
-  var x = layer.frame().x();
-  var y = layer.frame().y();
+  var x = layer.absoluteRect().rulerX();
+  var y = layer.absoluteRect().rulerY();
   var width = layer.frame().width();
   var height = layer.frame().height();
 
@@ -220,8 +220,8 @@ function layerWithPropertiesCode(layer) {
 
 function textLayerCode(layer) {
   var name = camelize(layer.name());
-  var x = layer.frame().x();
-  var y = layer.frame().y();
+  var x = layer.absoluteRect().rulerX();
+  var y = layer.absoluteRect().rulerY();
   var text = layer.stringValue()
   var fontSize = layer.fontSize()
   var fontFamily = layer.font().familyName()
@@ -301,8 +301,8 @@ function textLayerCode(layer) {
 
 function layerCode(layer) {
   var name = camelize(layer.name());
-  var x = layer.frame().x();
-  var y = layer.frame().y();
+  var x = layer.absoluteRect().rulerX();
+  var y = layer.absoluteRect().rulerY();
   var width = layer.frame().width();
   var height = layer.frame().height();
 
