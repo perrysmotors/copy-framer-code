@@ -11,6 +11,10 @@ If a layer is too complex to draw using code alone you will need to export and a
 ## Install
 Download or clone the repository, and double click `CopyFramerCode.sketchplugin`.
 
+or...
+
+[![Install PLUGIN NAME with Sketchpacks](http://sketchpacks-com.s3.amazonaws.com/assets/badges/sketchpacks-badge-install.png "Install PLUGIN NAME with Sketchpacks")](https://sketchpacks.com/perrysmotors/copy-framer-code/install)
+
 ## Usage
 1. Select the layers in Sketch you want to copy
 2. Select `Copy Framer Code > Copy Framer Code` from the Plugins menu
