@@ -8,6 +8,11 @@ function copyAt2x(context) {
   onRun(context);
 }
 
+function copyAt3x(context) {
+  scale = 3;
+  onRun(context);
+}
+
 function onRun(context) {
 
   var doc = context.document;

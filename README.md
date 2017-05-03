@@ -5,7 +5,7 @@ A Sketch plugin that copies any selected layer to the clipboard as code that can
 - Creates new Layers and TextLayers
 - Layers are copied in position 
 - Layers are drawn entirely in code
-- Export @ 1x or @ 2x
+- Export @ 1x, @ 2x or @ 3x
 
 If a layer is too complex to draw using code alone you will need to export and add a background image manually.
 
