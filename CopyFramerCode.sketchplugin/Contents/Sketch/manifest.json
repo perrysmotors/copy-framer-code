@@ -1,17 +1,30 @@
 {
-    "name" : "Copy Framer Code",
-    "identifier" : "com.gilesperry.copy-framer-code",
-    "version" : "1.0.3",
-    "description" : "Copy a layer to the clipboard as Framer code.",
-    "homepage": "https://github.com/perrysmotors/copy-framer-code",
-    "author" : "Giles Perry",
-    "commands" : [
+  "name" : "Copy Framer Code",
+  "identifier" : "com.gilesperry.copy-framer-code",
+  "version" : "1.1",
+  "description" : "Copy layers to the clipboard as Framer code.",
+  "homepage": "https://github.com/perrysmotors/copy-framer-code",
+  "author" : "Giles Perry",
+  "commands" : [
     {
       "script" : "copy-framer-code.js",
-      "handler" : "onRun",
+      "handler" : "copyAt1x",
       "shortcut" : "",
-      "name" : "Copy Framer Code",
-      "identifier" : "copyframercode"
+      "name" : "Copy @ 1x",
+      "identifier" : "copyAt1x"
+    },
+    {
+      "script" : "copy-framer-code.js",
+      "handler" : "copyAt2x",
+      "shortcut" : "",
+      "name" : "Copy @ 2x",
+      "identifier" : "copyAt2x"
     }
-  ]
+  ],
+  "menu": {
+    "items": [
+      "copyAt1x",
+      "copyAt2x"
+    ]
+  }
 }
