@@ -4,7 +4,8 @@ A Sketch plugin that copies any selected layer to the clipboard as code that can
 
 - Creates new Layers and TextLayers
 - Layers are copied in position 
-- Layers are drawn entirely in code 
+- Layers are drawn entirely in code
+- Export @ 1x or @ 2x
 
 If a layer is too complex to draw using code alone you will need to export and add a background image manually.
 
@@ -17,7 +18,7 @@ or...
 
 ## Usage
 1. Select the layers in Sketch you want to copy
-2. Select `Copy Framer Code > Copy Framer Code` from the Plugins menu
+2. If you want to export from Sketch @1x, select `Copy Framer Code > Copy @ 1x` from the Plugins menu. Or select `Copy Framer Code > Copy @ 2x` to double the scale of your design. 
 3. Paste the CoffeeScript into Framer.
 
 ![copytoframer](https://cloud.githubusercontent.com/assets/12557727/25554599/058f4524-2cc9-11e7-94ce-f84fc83a4dbe.gif)

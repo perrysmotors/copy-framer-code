@@ -1,3 +1,13 @@
+function copyAt1x(context) {
+  scale = 1;
+  onRun(context);
+}
+
+function copyAt2x(context) {
+  scale = 2;
+  onRun(context);
+}
+
 function onRun(context) {
 
   var doc = context.document;
@@ -5,8 +15,10 @@ function onRun(context) {
   var selectedCount = selectedLayers.count();
 
   if (selectedCount == 0) {
-    [doc showMessage: "Select one or more layers to copy."];
+    [doc showMessage: "Select one or more layers to copy"];
     return false;
+  } else {
+    [doc showMessage: "Copying @ " + scale + "x"];
   }
 
   var i, len, layer, copy = "";
@@ -159,10 +171,11 @@ function getFontStyle(layer) {
 
 function layerWithPropertiesCode(layer) {
   var name = camelize(layer.name());
-  var x = layer.absoluteRect().rulerX();
-  var y = layer.absoluteRect().rulerY();
-  var width = layer.frame().width();
-  var height = layer.frame().height();
+
+  var x = layer.absoluteRect().rulerX() * scale;
+  var y = layer.absoluteRect().rulerY() * scale;
+  var width = layer.frame().width() * scale;
+  var height = layer.frame().height() * scale;
 
   var newLayerCode = name + ' = new Layer\n' + '\tx: ' + x + '\n' + '\ty: ' + y + '\n' + '\twidth: ' + width + '\n' + '\theight: ' + height + '\n';
 
@@ -179,7 +192,7 @@ function layerWithPropertiesCode(layer) {
   if (isCircle(layer)) {
     borderRadius = width / 2;
   } else {
-    var borderRadius = layer.layers().firstObject().cornerRadiusFloat();
+    var borderRadius = layer.layers().firstObject().cornerRadiusFloat() * scale;
   }
   if (borderRadius != 0) {
     borderRadiusCode = '\tborderRadius: ' + borderRadius + '\n';
@@ -188,7 +201,7 @@ function layerWithPropertiesCode(layer) {
   var border = topBorder(layer.style());
   if (border != null) {
     var borderColor = border.color();
-    var borderWidth = border.thickness();
+    var borderWidth = border.thickness() * scale;
 
     borderStyleCode = '\tborderColor: ' + rgbaCode(borderColor) + '\n' + '\tborderWidth: ' + borderWidth + '\n';
   }
@@ -196,10 +209,10 @@ function layerWithPropertiesCode(layer) {
   var shadow = topShadow(layer.style());
   if (shadow != null) {
     var shadowColor = shadow.colorGeneric();
-    var shadowX = shadow.offsetX();
-    var shadowY = shadow.offsetY();
-    var shadowBlur = shadow.blurRadius();
-    var shadowSpread = shadow.spread();
+    var shadowX = shadow.offsetX() * scale;
+    var shadowY = shadow.offsetY() * scale;
+    var shadowBlur = shadow.blurRadius() * scale;
+    var shadowSpread = shadow.spread() * scale;
 
     shadowCode = '\tshadowColor: ' + rgbaCode(shadowColor) + '\n';
     shadowCode = shadowCode + '\tshadowX: ' + shadowX + '\n';
@@ -220,21 +233,23 @@ function layerWithPropertiesCode(layer) {
 
 function textLayerCode(layer) {
   var name = camelize(layer.name());
-  var x = layer.absoluteRect().rulerX();
-  var y = layer.absoluteRect().rulerY();
+
+  var x = layer.absoluteRect().rulerX() * scale;
+  var y = layer.absoluteRect().rulerY() * scale;
+
   var text = layer.stringValue()
-  var fontSize = layer.fontSize()
+  var fontSize = layer.fontSize() * scale
   var fontFamily = layer.font().familyName()
-  var lineHeight = layer.lineHeight() / fontSize
+  var lineHeight = layer.lineHeight() * scale / fontSize
   var color = layer.textColor()
   var textBehaviour = layer.textBehaviour()
-  var characterSpacing = layer.characterSpacing();
+  var characterSpacing = layer.characterSpacing() * scale;
   var characterSpacingNum = Number(characterSpacing).toFixed(1);
 
   var widthCode = ""
   // if text is fixed width
   if (textBehaviour == 1) {
-    var width = layer.frame().width();
+    var width = layer.frame().width() * scale;
     widthCode = '\twidth: ' + width + '\n';
   }
 
@@ -279,9 +294,9 @@ function textLayerCode(layer) {
   var shadow = topShadow(layer.style());
   if (shadow != null) {
     var shadowColor = shadow.colorGeneric();
-    var shadowX = shadow.offsetX();
-    var shadowY = shadow.offsetY();
-    var shadowBlur = shadow.blurRadius();
+    var shadowX = shadow.offsetX() * scale;
+    var shadowY = shadow.offsetY() * scale;
+    var shadowBlur = shadow.blurRadius() * scale;
 
     shadowCode = '\tshadowColor: ' + rgbaCode(shadowColor) + '\n';
     shadowCode = shadowCode + '\tshadowX: ' + shadowX + '\n';
@@ -301,10 +316,11 @@ function textLayerCode(layer) {
 
 function layerCode(layer) {
   var name = camelize(layer.name());
-  var x = layer.absoluteRect().rulerX();
-  var y = layer.absoluteRect().rulerY();
-  var width = layer.frame().width();
-  var height = layer.frame().height();
+
+  var x = layer.absoluteRect().rulerX() * scale;
+  var y = layer.absoluteRect().rulerY() * scale;
+  var width = layer.frame().width() * scale;
+  var height = layer.frame().height() * scale;
 
   var copy = name + ' = new Layer\n' + '\tx: ' + x + '\n' + '\ty: ' + y + '\n' + '\twidth: ' + width + '\n' + '\theight: ' + height + '\n\n';
 
