@@ -1,3 +1,5 @@
+var layerNames = {};
+
 function copyAt1x(context) {
   scale = 1;
   onRun(context);
@@ -29,7 +31,7 @@ function onRun(context) {
   var sketchObject, copy = "";
 
   selection.iterate(function(layer) {
-    
+
     sketchObject = layer.sketchObject;
 
     switch(sketchObject.class()) {
@@ -178,6 +180,7 @@ function getFontStyle(layer) {
 
 function layerWithPropertiesCode(layer) {
   var name = camelize(layer.name());
+  name = uniqueLayerName(name);
 
   var x = layer.absoluteRect().rulerX() * scale;
   var y = layer.absoluteRect().rulerY() * scale;
@@ -240,6 +243,7 @@ function layerWithPropertiesCode(layer) {
 
 function textLayerCode(layer) {
   var name = camelize(layer.name());
+  name = uniqueLayerName(name);
 
   var x = layer.absoluteRect().rulerX() * scale;
   var y = layer.absoluteRect().rulerY() * scale;
@@ -323,6 +327,7 @@ function textLayerCode(layer) {
 
 function layerCode(layer) {
   var name = camelize(layer.name());
+  name = uniqueLayerName(name);
 
   var x = layer.absoluteRect().rulerX() * scale;
   var y = layer.absoluteRect().rulerY() * scale;
@@ -349,6 +354,17 @@ function camelize(str) {
 
 function firstCharIsInvalid(str) {
   return str.charAt(0).match(/[^a-z$_]/i);
+}
+
+function uniqueLayerName(name){
+  if (layerNames[name] > 0) {
+    var count = ++layerNames[name];
+    return name + "_" + count;
+  }
+  else {
+    layerNames[name] = 1;
+    return name;
+  }
 }
 
 // Using JSTalk clipboard handling snippet from https://gist.github.com/uhunkler/5465857 by Urs Hunkler
