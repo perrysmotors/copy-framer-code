@@ -15,42 +15,44 @@ function copyAt3x(context) {
 
 function onRun(context) {
 
-  var doc = context.document;
-  var selectedLayers = context.selection;
-  var selectedCount = selectedLayers.count();
+  var sketch = context.api();
+  var document = sketch.selectedDocument;
+  var selection = document.selectedLayers;
 
-  if (selectedCount == 0) {
-    [doc showMessage: "Select one or more layers to copy"];
+  if (selection.isEmpty) {
+    sketch.message("Select one or more layers to copy");
     return false;
-  } else {
-    [doc showMessage: "Copying @ " + scale + "x"];
+  }  else {
+    sketch.message("Copying @ " + scale + "x");
   }
 
-  var i, len, layer, copy = "";
-  for (i = 0, len = selectedLayers.length; i < len; i++) {
-    layer = selectedLayers[i];
+  var sketchObject, copy = "";
 
-    switch(layer.class()) {
+  selection.iterate(function(layer) {
+    
+    sketchObject = layer.sketchObject;
+
+    switch(sketchObject.class()) {
       // case MSLayerGroup:
       //   log("Group");
       //   break;
       case MSShapeGroup:
-        if (isRectangle(layer) || isCircle(layer)) {
-          copy = copy + layerWithPropertiesCode(layer);
+        if (isRectangle(sketchObject) || isCircle(sketchObject)) {
+          copy = copy + layerWithPropertiesCode(sketchObject);
         } else {
-          copy = copy + layerCode(layer);
+          copy = copy + layerCode(sketchObject);
         }
         break;
 
       case MSTextLayer:
-        copy = copy + textLayerCode(layer);
+        copy = copy + textLayerCode(sketchObject);
         break;
 
       default:
-        copy = copy + layerCode(layer);
+        copy = copy + layerCode(sketchObject);
     }
 
-  }
+  });
 
   clipboard.set(copy);
 
