@@ -218,7 +218,7 @@ function layerWithPropertiesCode(layer) {
 
   var shadow = topShadow(layer.style());
   if (shadow != null) {
-    var shadowColor = shadow.colorGeneric();
+    var shadowColor = shadow.color();
     var shadowX = shadow.offsetX() * scale;
     var shadowY = shadow.offsetY() * scale;
     var shadowBlur = shadow.blurRadius() * scale;
@@ -304,7 +304,7 @@ function textLayerCode(layer) {
 
   var shadow = topShadow(layer.style());
   if (shadow != null) {
-    var shadowColor = shadow.colorGeneric();
+    var shadowColor = shadow.color();
     var shadowX = shadow.offsetX() * scale;
     var shadowY = shadow.offsetY() * scale;
     var shadowBlur = shadow.blurRadius() * scale;
