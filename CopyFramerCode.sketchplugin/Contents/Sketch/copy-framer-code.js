@@ -15,6 +15,8 @@ function copyAt3x(context) {
   onRun(context);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 function onRun(context) {
 
   var sketch = context.api();
@@ -60,6 +62,149 @@ function onRun(context) {
 
 };
 
+////////////////////////////////////////////////////////////////////////////////
+
+function layerWithPropertiesCode(layer) {
+
+  var framerObject = {};
+
+  framerObject.x = layer.absoluteRect().rulerX() * scale;
+  framerObject.y = layer.absoluteRect().rulerY() * scale;
+  framerObject.width = layer.frame().width() * scale;
+  framerObject.height = layer.frame().height() * scale;
+
+  var fill = topFill(layer.style());
+  if (fill == null) {
+    framerObject.backgroundColor = '"transparent"'
+  } else {
+    framerObject.backgroundColor = rgbaCode(fill.color());
+  }
+
+  var borderRadius
+  if (isCircle(layer)) {
+    borderRadius = framerObject.width / 2;
+  } else {
+    borderRadius = layer.layers().firstObject().cornerRadiusFloat() * scale;
+  }
+  if (borderRadius != 0) {
+    framerObject.borderRadius = borderRadius;
+  }
+
+  var border = topBorder(layer.style());
+  if (border != null) {
+    framerObject.borderColor = rgbaCode(border.color());
+    framerObject.borderWidth = border.thickness() * scale;
+  }
+
+  var shadow = topShadow(layer.style());
+  if (shadow != null) {
+    framerObject.shadowColor = rgbaCode(shadow.color());
+    framerObject.shadowX = shadow.offsetX() * scale;
+    framerObject.shadowY = shadow.offsetY() * scale;
+    framerObject.shadowBlur = shadow.blurRadius() * scale;
+    framerObject.shadowSpread = shadow.spread() * scale;
+  }
+
+  var opacity = layer.style().contextSettings().opacity();
+  if (opacity != 1) {
+    framerObject.opacity = opacity;
+  }
+
+  var name = camelize(layer.name());
+  name = uniqueLayerName(name);
+
+  return name + ' = new Layer\n' + framerLayerProperties(framerObject) + '\n';
+}
+
+function textLayerCode(layer) {
+
+  var framerObject = {};
+
+  framerObject.x = layer.absoluteRect().rulerX() * scale;
+  framerObject.y = layer.absoluteRect().rulerY() * scale;
+
+  // if text is fixed width
+  if (layer.textBehaviour() == 1) {
+    framerObject.width = layer.frame().width() * scale;
+  }
+
+  framerObject.text = '"' + layer.stringValue() + '"';
+  framerObject.fontSize = layer.fontSize() * scale;
+  framerObject.fontFamily = '"' + layer.font().familyName() + '"';
+
+  var fontStyle = getFontStyle(layer);
+  if (fontStyle.slope != "") {
+    framerObject.fontStyle = fontStyle.slope;
+  }
+  if (fontStyle.weight != "") {
+    framerObject.fontWeight = fontStyle.weight;
+  }
+
+  if (layer.characterSpacing() != null) {
+    framerObject.letterSpacingCode = (layer.characterSpacing() * scale).toFixed(1);
+  }
+
+  if (layer.lineHeight() != 0) {
+    framerObject.lineHeight = layer.lineHeight() * scale / framerObject.fontSize;
+  }
+
+  switch(layer.textAlignment()) {
+    case 1:
+      framerObject.textAlign = '"right"';
+      break;
+    case 2:
+      framerObject.textAlign = '"center"';
+      break;
+    default:
+      framerObject.textAlign = '"left"';
+  }
+
+  framerObject.color = rgbaCode(layer.textColor());
+
+  var shadow = topShadow(layer.style());
+  if (shadow != null) {
+    framerObject.shadowColor = rgbaCode(shadow.color());
+    framerObject.shadowX = shadow.offsetX() * scale;
+    framerObject.shadowY = shadow.offsetY() * scale;
+    framerObject.shadowBlur = shadow.blurRadius() * scale;
+  }
+
+  var opacity = layer.style().contextSettings().opacity();
+  if (opacity != 1) {
+    framerObject.opacity = opacity;
+  }
+
+  var name = camelize(layer.name());
+  name = uniqueLayerName(name);
+
+  return name + ' = new TextLayer\n' + framerLayerProperties(framerObject) + '\n';
+}
+
+function layerCode(layer) {
+
+  var framerObject = {};
+
+  framerObject.x = layer.absoluteRect().rulerX() * scale;
+  framerObject.y = layer.absoluteRect().rulerY() * scale;
+  framerObject.width = layer.frame().width() * scale;
+  framerObject.height = layer.frame().height() * scale;
+
+  var name = camelize(layer.name());
+  name = uniqueLayerName(name);
+
+  return name + ' = new Layer\n' + framerLayerProperties(framerObject) + '\n';
+}
+
+function framerLayerProperties(object) {
+  var text = "";
+  Object.keys(object).forEach(function(key) {
+    text = text + '\t' + key + ': ' + object[key] + '\n';
+  });
+  return text;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 function topFill(style) {
   var fills = style.enabledFills();
 
@@ -98,6 +243,8 @@ function topShadow(style) {
     return shadows[len-1];
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 function isRectangle(layer) {
   var layerCount = layer.layers().count();
@@ -161,12 +308,12 @@ function getFontStyle(layer) {
   var fontWeight = "", fontSlope = "";
 
   if (val.includes("italic")) {
-    fontSlope = "italic";
+    fontSlope = '"italic"';
     val = val.replace("italic", "");
   }
 
   if (val.includes("oblique")) {
-    fontSlope = "oblique";
+    fontSlope = '"oblique"';
     val = val.replace("oblique", "");
   }
 
@@ -177,167 +324,7 @@ function getFontStyle(layer) {
   return {weight: fontWeight, slope: fontSlope};
 }
 
-
-function layerWithPropertiesCode(layer) {
-  var name = camelize(layer.name());
-  name = uniqueLayerName(name);
-
-  var x = layer.absoluteRect().rulerX() * scale;
-  var y = layer.absoluteRect().rulerY() * scale;
-  var width = layer.frame().width() * scale;
-  var height = layer.frame().height() * scale;
-
-  var newLayerCode = name + ' = new Layer\n' + '\tx: ' + x + '\n' + '\ty: ' + y + '\n' + '\twidth: ' + width + '\n' + '\theight: ' + height + '\n';
-
-  var backgroundColorCode, borderRadiusCode = "", borderStyleCode = "", shadowCode = "", opacityCode = ""
-
-  var fill = topFill(layer.style());
-  if (fill == null) {
-    backgroundColorCode = '\tbackgroundColor: "transparent"\n';
-  } else {
-    backgroundColorCode = '\tbackgroundColor: ' + rgbaCode(fill.color()) + '\n';
-  }
-
-  var borderRadius
-  if (isCircle(layer)) {
-    borderRadius = width / 2;
-  } else {
-    var borderRadius = layer.layers().firstObject().cornerRadiusFloat() * scale;
-  }
-  if (borderRadius != 0) {
-    borderRadiusCode = '\tborderRadius: ' + borderRadius + '\n';
-  }
-
-  var border = topBorder(layer.style());
-  if (border != null) {
-    var borderColor = border.color();
-    var borderWidth = border.thickness() * scale;
-
-    borderStyleCode = '\tborderColor: ' + rgbaCode(borderColor) + '\n' + '\tborderWidth: ' + borderWidth + '\n';
-  }
-
-  var shadow = topShadow(layer.style());
-  if (shadow != null) {
-    var shadowColor = shadow.color();
-    var shadowX = shadow.offsetX() * scale;
-    var shadowY = shadow.offsetY() * scale;
-    var shadowBlur = shadow.blurRadius() * scale;
-    var shadowSpread = shadow.spread() * scale;
-
-    shadowCode = '\tshadowColor: ' + rgbaCode(shadowColor) + '\n';
-    shadowCode = shadowCode + '\tshadowX: ' + shadowX + '\n';
-    shadowCode = shadowCode + '\tshadowY: ' + shadowY + '\n';
-    shadowCode = shadowCode + '\tshadowBlur: ' + shadowBlur + '\n';
-    shadowCode = shadowCode + '\tshadowSpread: ' + shadowSpread + '\n';
-  }
-
-  var opacity = layer.style().contextSettings().opacity();
-  if (opacity != 1) {
-    opacityCode = '\topacity: ' + opacity + '\n';
-  }
-
-  var copy = newLayerCode + backgroundColorCode + borderRadiusCode + borderStyleCode + shadowCode + opacityCode + '\n';
-
-  return copy;
-}
-
-function textLayerCode(layer) {
-  var name = camelize(layer.name());
-  name = uniqueLayerName(name);
-
-  var x = layer.absoluteRect().rulerX() * scale;
-  var y = layer.absoluteRect().rulerY() * scale;
-
-  var text = layer.stringValue()
-  var fontSize = layer.fontSize() * scale
-  var fontFamily = layer.font().familyName()
-  var lineHeight = layer.lineHeight() * scale / fontSize
-  var color = layer.textColor()
-  var textBehaviour = layer.textBehaviour()
-  var characterSpacing = layer.characterSpacing() * scale;
-  var characterSpacingNum = Number(characterSpacing).toFixed(1);
-
-  var widthCode = ""
-  // if text is fixed width
-  if (textBehaviour == 1) {
-    var width = layer.frame().width() * scale;
-    widthCode = '\twidth: ' + width + '\n';
-  }
-
-  var textAlignCode
-  switch(layer.textAlignment()) {
-    case 1:
-      textAlignCode = '\ttextAlign: "right"\n';
-      break;
-    case 2:
-      textAlignCode = '\ttextAlign: "center"\n';
-      break;
-    default:
-      textAlignCode = '\ttextAlign: "left"\n';
-  }
-
-  var newLayerCode = name + ' = new TextLayer\n' + '\tx: ' + x + '\n' + '\ty: ' + y + '\n' + widthCode + '\ttext: "' + text + '"\n';
-  newLayerCode = newLayerCode + '\tfontSize: ' + fontSize + '\n' + '\tfontFamily: "' + fontFamily + '"\n';
-
-  var fontStyleCode = "";
-  var fontStyle = getFontStyle(layer);
-  if (fontStyle.slope != "") {
-    fontStyleCode = fontStyleCode + '\tfontStyle: "' + fontStyle.slope + '"\n';
-  }
-  if (fontStyle.weight != "") {
-    fontStyleCode = fontStyleCode + '\tfontWeight: ' + fontStyle.weight + '\n';
-  }
-
-  var letterSpacingCode = "";
-  if (characterSpacing != null) {
-    letterSpacingCode = '\tletterSpacing: ' + characterSpacingNum + '\n';
-  }
-
-  var lineHeightCode = ""
-  if (lineHeight != 0) {
-    lineHeightCode = '\tlineHeight: ' + lineHeight + '\n';
-  }
-
-  var shadowCode = "", opacityCode = "";
-
-  var colorCode = '\tcolor: ' + rgbaCode(color) + '\n';
-
-  var shadow = topShadow(layer.style());
-  if (shadow != null) {
-    var shadowColor = shadow.color();
-    var shadowX = shadow.offsetX() * scale;
-    var shadowY = shadow.offsetY() * scale;
-    var shadowBlur = shadow.blurRadius() * scale;
-
-    shadowCode = '\tshadowColor: ' + rgbaCode(shadowColor) + '\n';
-    shadowCode = shadowCode + '\tshadowX: ' + shadowX + '\n';
-    shadowCode = shadowCode + '\tshadowY: ' + shadowY + '\n';
-    shadowCode = shadowCode + '\tshadowBlur: ' + shadowBlur + '\n';
-  }
-
-  var opacity = layer.style().contextSettings().opacity();
-  if (opacity != 1) {
-    opacityCode = '\topacity: ' + opacity + '\n';
-  }
-
-  var copy = newLayerCode + fontStyleCode + letterSpacingCode + lineHeightCode + textAlignCode + colorCode + shadowCode + opacityCode + '\n';
-
-  return copy;
-}
-
-function layerCode(layer) {
-  var name = camelize(layer.name());
-  name = uniqueLayerName(name);
-
-  var x = layer.absoluteRect().rulerX() * scale;
-  var y = layer.absoluteRect().rulerY() * scale;
-  var width = layer.frame().width() * scale;
-  var height = layer.frame().height() * scale;
-
-  var copy = name + ' = new Layer\n' + '\tx: ' + x + '\n' + '\ty: ' + y + '\n' + '\twidth: ' + width + '\n' + '\theight: ' + height + '\n\n';
-
-  return copy;
-}
+////////////////////////////////////////////////////////////////////////////////
 
 function camelize(str) {
   str = str.replace(/-/g, " ");
@@ -366,6 +353,8 @@ function uniqueLayerName(name){
     return name;
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 // Using JSTalk clipboard handling snippet from https://gist.github.com/uhunkler/5465857 by Urs Hunkler
 var clipboard = {
