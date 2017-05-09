@@ -50,7 +50,7 @@ var processLayerRecursively = function(layer, parent) {
 
   var sketchObject = layer.sketchObject;
 
-  if (sketchObject.isVisible()) {
+  if (sketchObject.isVisible() && sketchObject.class() != MSSliceLayer) {
 
     var framerObject = {};
 
