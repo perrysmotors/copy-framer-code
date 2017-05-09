@@ -1,4 +1,5 @@
 var layerNames = {};
+var framerLayers = [];
 
 function copyAt1x(context) {
   scale = 1;
@@ -30,37 +31,84 @@ function onRun(context) {
     sketch.message("Copying @ " + scale + "x");
   }
 
-  var sketchObject, copy = "";
-
   selection.iterate(function(layer) {
-
-    sketchObject = layer.sketchObject;
-
-    switch(sketchObject.class()) {
-      // case MSLayerGroup:
-      //   log("Group");
-      //   break;
-      case MSShapeGroup:
-        if (isRectangle(sketchObject) || isCircle(sketchObject)) {
-          copy = copy + layerWithPropertiesCode(sketchObject);
-        } else {
-          copy = copy + layerCode(sketchObject);
-        }
-        break;
-
-      case MSTextLayer:
-        copy = copy + textLayerCode(sketchObject);
-        break;
-
-      default:
-        copy = copy + layerCode(sketchObject);
-    }
-
+    processLayerRecursively(layer);
   });
 
-  clipboard.set(copy);
+  var i, len, clipboardText = "";
+  for (i = 0, len = framerLayers.length; i < len; i++) {
+    clipboardText = clipboardText + framerLayerProperties(framerLayers[i]) + '\n';
+  }
 
-};
+  clipboard.set(clipboardText);
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+var processLayerRecursively = function(layer, parent) {
+
+  var sketchObject = layer.sketchObject;
+
+  if (sketchObject.isVisible()) {
+
+    var framerObject = {};
+
+    framerObject.layerType = "Layer";
+
+    var name = camelize(layer.name);
+    name = uniqueLayerName(name);
+    framerObject.name = name;
+
+    if (layer.isArtboard) {
+      framerObject.x = 0;
+      framerObject.y = 0;
+
+    } else if (parent == null) {
+      framerObject.x = sketchObject.absoluteRect().rulerX() * scale;
+      framerObject.y = sketchObject.absoluteRect().rulerY() * scale;
+    } else {
+      framerObject.parent = parent;
+      framerObject.x = layer.frame.x * scale;
+      framerObject.y = layer.frame.y * scale;
+    }
+
+    var isFlattenedGroup = (layer.name.slice(-1) == "*");
+
+    if (layer.isGroup) {
+      if (isFlattenedGroup) {
+        Object.assign(framerObject, layerCode(sketchObject));
+        framerLayers.push(framerObject);
+
+      } else {
+        framerObject.backgroundColor = '"transparent"';
+        Object.assign(framerObject, layerCode(sketchObject));
+        framerLayers.push(framerObject);
+
+        layer.iterate(function(layer) {
+          processLayerRecursively(layer, name);
+        });
+      }
+
+    } else if (layer.isShape) {
+      if (isRectangle(sketchObject) || isCircle(sketchObject)) {
+        Object.assign(framerObject, layerWithPropertiesCode(sketchObject));
+      } else {
+        Object.assign(framerObject, layerCode(sketchObject));
+      }
+      framerLayers.push(framerObject);
+
+    } else if (layer.isText) {
+      framerObject.layerType = "TextLayer";
+      Object.assign(framerObject, textLayerCode(sketchObject));
+      framerLayers.push(framerObject);
+
+    } else {
+      Object.assign(framerObject, layerCode(sketchObject));
+      framerLayers.push(framerObject);
+    }
+  }
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -68,14 +116,12 @@ function layerWithPropertiesCode(layer) {
 
   var framerObject = {};
 
-  framerObject.x = layer.absoluteRect().rulerX() * scale;
-  framerObject.y = layer.absoluteRect().rulerY() * scale;
   framerObject.width = layer.frame().width() * scale;
   framerObject.height = layer.frame().height() * scale;
 
   var fill = topFill(layer.style());
   if (fill == null) {
-    framerObject.backgroundColor = '"transparent"'
+    framerObject.backgroundColor = '"transparent"';
   } else {
     framerObject.backgroundColor = rgbaCode(fill.color());
   }
@@ -110,18 +156,14 @@ function layerWithPropertiesCode(layer) {
     framerObject.opacity = opacity;
   }
 
-  var name = camelize(layer.name());
-  name = uniqueLayerName(name);
-
-  return name + ' = new Layer\n' + framerLayerProperties(framerObject) + '\n';
+  return framerObject;
 }
+
+//------------------------------------------------------------------------------
 
 function textLayerCode(layer) {
 
   var framerObject = {};
-
-  framerObject.x = layer.absoluteRect().rulerX() * scale;
-  framerObject.y = layer.absoluteRect().rulerY() * scale;
 
   // if text is fixed width
   if (layer.textBehaviour() == 1) {
@@ -174,31 +216,40 @@ function textLayerCode(layer) {
     framerObject.opacity = opacity;
   }
 
-  var name = camelize(layer.name());
-  name = uniqueLayerName(name);
-
-  return name + ' = new TextLayer\n' + framerLayerProperties(framerObject) + '\n';
+  return framerObject;
 }
+
+//------------------------------------------------------------------------------
 
 function layerCode(layer) {
 
   var framerObject = {};
 
-  framerObject.x = layer.absoluteRect().rulerX() * scale;
-  framerObject.y = layer.absoluteRect().rulerY() * scale;
   framerObject.width = layer.frame().width() * scale;
   framerObject.height = layer.frame().height() * scale;
 
-  var name = camelize(layer.name());
-  name = uniqueLayerName(name);
+  var opacity = layer.style().contextSettings().opacity();
+  if (opacity != 1) {
+    framerObject.opacity = opacity;
+  }
 
-  return name + ' = new Layer\n' + framerLayerProperties(framerObject) + '\n';
+  return framerObject;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 function framerLayerProperties(object) {
-  var text = "";
+  var text
+  if (object.layerType == "TextLayer") {
+    text = object.name + ' = new TextLayer\n';
+  } else {
+    text = object.name + ' = new Layer\n';
+  }
+
   Object.keys(object).forEach(function(key) {
-    text = text + '\t' + key + ': ' + object[key] + '\n';
+    if (key != "layerType" && key != "name") {
+      text = text + '\t' + key + ': ' + object[key] + '\n';
+    }
   });
   return text;
 }
