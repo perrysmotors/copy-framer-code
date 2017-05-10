@@ -27,8 +27,6 @@ function onRun(context) {
   if (selection.isEmpty) {
     sketch.message("Select one or more layers to copy");
     return false;
-  }  else {
-    sketch.message("Copying @ " + scale + "x");
   }
 
   selection.iterate(function(layer) {
@@ -40,7 +38,12 @@ function onRun(context) {
     clipboardText = clipboardText + framerLayerProperties(framerLayers[i]) + '\n';
   }
 
-  clipboard.set(clipboardText);
+  if (clipboardText != "") {
+    sketch.message("Copying @ " + scale + "x");
+    clipboard.set(clipboardText);
+  } else {
+    sketch.message("Fail :(");
+  }
 
 }
 
@@ -56,7 +59,7 @@ var processLayerRecursively = function(layer, parent) {
 
     framerObject.layerType = "Layer";
 
-    var name = camelize(layer.name);
+    var name = camelize(sketchObject.name());
     name = uniqueLayerName(name);
     framerObject.name = name;
 
@@ -69,11 +72,11 @@ var processLayerRecursively = function(layer, parent) {
       framerObject.y = sketchObject.absoluteRect().rulerY() * scale;
     } else {
       framerObject.parent = parent;
-      framerObject.x = layer.frame.x * scale;
-      framerObject.y = layer.frame.y * scale;
+      framerObject.x = sketchObject.frame().x() * scale;
+      framerObject.y = sketchObject.frame().y() * scale;
     }
 
-    var isFlattenedGroup = (layer.name.slice(-1) == "*");
+    var isFlattenedGroup = (sketchObject.name().slice(-1) == "*");
 
     if (layer.isGroup) {
       if (isFlattenedGroup) {
