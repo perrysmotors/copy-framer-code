@@ -231,6 +231,29 @@ function layerCode(layer) {
   framerObject.width = layer.frame().width() * scale;
   framerObject.height = layer.frame().height() * scale;
 
+  function findFormatMatchingScale(exportFormat) {
+    return exportFormat.scale() === scale;
+  }
+
+  var imageFilename = fileNameFromPath(layer.name());
+  var exportFormats = layer.exportOptions().exportFormats();
+
+  if (exportFormats.length != 0) {
+    var matchingExportFormat = exportFormats.find(findFormatMatchingScale));
+    if (matchingExportFormat == null) {
+      matchingExportFormat = exportFormats[0];
+    }
+    var imageExtn = matchingExportFormat.fileFormat();
+    if (matchingExportFormat.name() != null) {
+      if (matchingExportFormat.namingScheme() == 0) {
+        imageFilename = imageFilename + matchingExportFormat.name();
+      } else {
+        imageFilename = matchingExportFormat.name() + imageFilename;
+      }
+    }
+    framerObject.image = '"images/' + imageFilename + '.' + imageExtn + '"';
+  }
+
   var opacity = layer.style().contextSettings().opacity();
   if (opacity != 1) {
     framerObject.opacity = opacity;
@@ -406,6 +429,10 @@ function uniqueLayerName(name){
     layerNames[name] = 1;
     return name;
   }
+}
+
+function fileNameFromPath (str) {
+    return str.split('/').pop().trim();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
