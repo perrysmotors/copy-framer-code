@@ -186,7 +186,7 @@ function textLayerCode(layer) {
   }
 
   if (layer.characterSpacing() != null) {
-    framerObject.letterSpacingCode = (layer.characterSpacing() * scale).toFixed(1);
+    framerObject.letterSpacing = (layer.characterSpacing() * scale).toFixed(1);
   }
 
   if (layer.lineHeight() != 0) {
@@ -407,7 +407,9 @@ function camelize(str) {
   str = str.replace(/-/g, " ");
   str = str.replace(/[^a-zA-Z0-9$_ ]/g, "")
   str = str.trim();
-  if (firstCharIsInvalid(str)) {
+  if (str == "") {
+    str = "layer";
+  } else if (firstCharIsInvalid(str)) {
     str = "layer_" + str;
   }
   return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
