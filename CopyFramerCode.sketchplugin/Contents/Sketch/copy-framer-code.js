@@ -29,7 +29,7 @@ function onRun(context) {
     return false;
   }
 
-  selection.iterate(function(layer) {
+  selection.iterate(function (layer) {
     processLayerRecursively(layer);
   });
 
@@ -49,7 +49,7 @@ function onRun(context) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-var processLayerRecursively = function(layer, parent) {
+var processLayerRecursively = function (layer, parent) {
 
   var sketchObject = layer.sketchObject;
 
@@ -88,7 +88,7 @@ var processLayerRecursively = function(layer, parent) {
         Object.assign(framerObject, layerCode(sketchObject));
         framerLayers.push(framerObject);
 
-        layer.iterate(function(layer) {
+        layer.iterate(function (layer) {
           processLayerRecursively(layer, name);
         });
       }
@@ -99,6 +99,7 @@ var processLayerRecursively = function(layer, parent) {
       } else {
         Object.assign(framerObject, layerCode(sketchObject));
       }
+
       framerLayers.push(framerObject);
 
     } else if (layer.isText) {
@@ -111,7 +112,7 @@ var processLayerRecursively = function(layer, parent) {
       framerLayers.push(framerObject);
     }
   }
-}
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -129,12 +130,13 @@ function layerWithPropertiesCode(layer) {
     framerObject.backgroundColor = rgbaCode(fill.color());
   }
 
-  var borderRadius
+  var borderRadius;
   if (isCircle(layer)) {
     borderRadius = framerObject.width / 2;
   } else {
     borderRadius = layer.layers().firstObject().cornerRadiusFloat() * scale;
   }
+
   if (borderRadius != 0) {
     framerObject.borderRadius = borderRadius;
   }
@@ -181,6 +183,7 @@ function textLayerCode(layer) {
   if (fontStyle.slope != "") {
     framerObject.fontStyle = fontStyle.slope;
   }
+
   if (fontStyle.weight != "") {
     framerObject.fontWeight = fontStyle.weight;
   }
@@ -193,7 +196,7 @@ function textLayerCode(layer) {
     framerObject.lineHeight = layer.lineHeight() * scale / framerObject.fontSize;
   }
 
-  switch(layer.textAlignment()) {
+  switch (layer.textAlignment()) {
     case 1:
       framerObject.textAlign = '"right"';
       break;
@@ -202,6 +205,22 @@ function textLayerCode(layer) {
       break;
     default:
       framerObject.textAlign = '"left"';
+  }
+
+  if (layer.styleAttributes().NSStrikethrough == 1) {
+    framerObject.textDecoration = '"line-through"';
+  }
+
+  if (layer.styleAttributes().NSUnderline == 1) {
+    framerObject.textDecoration = '"underline"';
+  }
+
+  if (layer.styleAttributes().MSAttributedStringTextTransformAttribute == 1) {
+    framerObject.textTransform = '"uppercase"';
+  }
+
+  if (layer.styleAttributes().MSAttributedStringTextTransformAttribute == 2) {
+    framerObject.textTransform = '"lowercase"';
   }
 
   framerObject.color = rgbaCode(layer.textColor());
@@ -239,10 +258,11 @@ function layerCode(layer) {
   var exportFormats = layer.exportOptions().exportFormats();
 
   if (exportFormats.length != 0) {
-    var matchingExportFormat = exportFormats.find(findFormatMatchingScale));
+    var matchingExportFormat = exportFormats.find(findFormatMatchingScale);
     if (matchingExportFormat == null) {
       matchingExportFormat = exportFormats[0];
     }
+
     var imageExtn = matchingExportFormat.fileFormat();
     if (matchingExportFormat.name() != null) {
       if (matchingExportFormat.namingScheme() == 0) {
@@ -251,6 +271,7 @@ function layerCode(layer) {
         imageFilename = matchingExportFormat.name() + imageFilename;
       }
     }
+
     framerObject.image = '"images/' + imageFilename + '.' + imageExtn + '"';
   }
 
@@ -265,18 +286,19 @@ function layerCode(layer) {
 ////////////////////////////////////////////////////////////////////////////////
 
 function framerLayerProperties(object) {
-  var text
+  var text;
   if (object.layerType == "TextLayer") {
     text = object.name + ' = new TextLayer\n';
   } else {
     text = object.name + ' = new Layer\n';
   }
 
-  Object.keys(object).forEach(function(key) {
+  Object.keys(object).forEach(function (key) {
     if (key != "layerType" && key != "name") {
       text = text + '\t' + key + ': ' + object[key] + '\n';
     }
   });
+
   return text;
 }
 
@@ -289,7 +311,7 @@ function topFill(style) {
   for (i = 0, len = fills.length; i < len; i++) {
     var fillType = fills[i].fillType();
     if (fillType == 0) {
-      fill = fills[i]
+      fill = fills[i];
     }
   }
 
@@ -303,7 +325,7 @@ function topBorder(style) {
   for (i = 0, len = borders.length; i < len; i++) {
     var fillType = borders[i].fillType();
     if (fillType == 0) {
-      border = borders[i]
+      border = borders[i];
     }
   }
 
@@ -317,7 +339,7 @@ function topShadow(style) {
   if (len == 0) {
     return null;
   } else {
-    return shadows[len-1];
+    return shadows[len - 1];
   }
 }
 
@@ -327,7 +349,7 @@ function isRectangle(layer) {
   var layerCount = layer.layers().count();
   var layerClass = layer.layers()[0].class();
 
-  if (layerCount == 1 && layerClass== MSRectangleShape) {
+  if (layerCount == 1 && layerClass == MSRectangleShape) {
     return true;
   } else {
     return false;
@@ -340,7 +362,7 @@ function isCircle(layer) {
   var width = layer.frame().width();
   var height = layer.frame().height();
 
-  if (layerCount == 1 && layerClass== MSOvalShape && width == height) {
+  if (layerCount == 1 && layerClass == MSOvalShape && width == height) {
     return true;
   } else {
     return false;
@@ -348,9 +370,9 @@ function isCircle(layer) {
 }
 
 function rgbaCode(colour) {
-  var red = Math.round(colour.red()*255);
-  var green = Math.round(colour.green()*255);
-  var blue = Math.round(colour.blue()*255);
+  var red = Math.round(colour.red() * 255);
+  var green = Math.round(colour.green() * 255);
+  var blue = Math.round(colour.blue() * 255);
 
   return '"rgba(' + red + ',' + green + ',' + blue + ',' + colour.alpha() + ')"';
 }
@@ -358,24 +380,24 @@ function rgbaCode(colour) {
 function getFontStyle(layer) {
 
   var fontWeights = {
-  	"thin": 100,
-  	"extralight": 200,
-  	"ultralight": 200,
-  	"light": 300,
-  	"book": 400,
-  	"normal": 400,
-  	"regular": 400,
-  	"roman": 400,
-  	"medium": 500,
-  	"semibold": 600,
-  	"demibold": 600,
-  	"bold": 700,
+    "thin": 100,
+    "extralight": 200,
+    "ultralight": 200,
+    "light": 300,
+    "book": 400,
+    "normal": 400,
+    "regular": 400,
+    "roman": 400,
+    "medium": 500,
+    "semibold": 600,
+    "demibold": 600,
+    "bold": 700,
     "boldmt": 700,
     "psboldmt": 700,
-  	"extrabold": 800,
-  	"ultrabold": 800,
-  	"black": 900,
-  	"heavy": 900
+    "extrabold": 800,
+    "ultrabold": 800,
+    "black": 900,
+    "heavy": 900
   }
 
   var fontFamily = layer.font().familyName().replace(/ /g, "");

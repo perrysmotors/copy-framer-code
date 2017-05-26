@@ -1,8 +1,7 @@
 {
   "name" : "Copy Framer Code",
   "identifier" : "com.gilesperry.copy-framer-code",
-  "version" : "3.0.1",
-  "appcastURL": "https://api.sketchpacks.com/v1/plugins/com.gilesperry.copy-framer-code/appcast",
+  "version" : "3.1",
   "compatibleVersion": 44,
   "description" : "Copy layers to the clipboard as Framer code.",
   "homepage": "https://github.com/perrysmotors/copy-framer-code",
