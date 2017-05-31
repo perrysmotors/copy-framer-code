@@ -1,4 +1,5 @@
 # Copy Framer Code plugin for Sketch
+[![Download from Sketchpacks.com](https://badges.sketchpacks.com/plugins/com.gilesperry.copy-framer-code/version.svg)](https://api.sketchpacks.com/v1/plugins/com.gilesperry.copy-framer-code/download) [![Compatible Sketch Version](https://badges.sketchpacks.com/plugins/com.gilesperry.copy-framer-code/compatibility.svg)](https://sketchpacks.com/perrysmotors/copy-framer-code)
 
 A Sketch plugin that copies selected layers to the clipboard as code that can be pasted straight into a Framer prototype.
 
