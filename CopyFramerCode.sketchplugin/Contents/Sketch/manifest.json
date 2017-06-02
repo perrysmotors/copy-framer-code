@@ -6,6 +6,7 @@
   "description" : "Copy layers to the clipboard as Framer code.",
   "homepage": "https://github.com/perrysmotors/copy-framer-code",
   "author" : "Giles Perry",
+  "appcast": "https://api.sketchpacks.com/v1/plugins/com.gilesperry.copy-framer-code/appcast",
   "commands" : [
     {
       "script" : "copy-framer-code.js",
