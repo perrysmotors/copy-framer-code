@@ -398,7 +398,7 @@ function getFontStyle(layer) {
     "ultrabold": 800,
     "black": 900,
     "heavy": 900
-  }
+  };
 
   var fontFamily = layer.font().familyName().replace(/ /g, "");
   var fontName = layer.fontPostscriptName().replace(/-/g, "");
@@ -427,7 +427,7 @@ function getFontStyle(layer) {
 
 function camelize(str) {
   str = str.replace(/-/g, " ");
-  str = str.replace(/[^a-zA-Z0-9$_ ]/g, "")
+  str = str.replace(/[^a-zA-Z0-9$_ ]/g, "");
   str = str.trim();
   if (str == "") {
     str = "layer";
