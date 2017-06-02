@@ -93,9 +93,11 @@ text = new TextLayer
 	fontSize: 38
 	fontFamily: "Gotham SSm"
 	fontWeight: 500
-	letterSpacingCode: -0.4
+	letterSpacing: -0.4
 	lineHeight: 2
 	textAlign: "center"
+	textDecoration: "underline"
+	textTransform: "uppercase"
 	color: "rgba(75,79,96,1)"
 	shadowColor: "rgba(0,0,0,0.25)"
 	shadowX: 0
@@ -205,4 +207,4 @@ This tells the plugin to include a reference to the image in the code it generat
 
 2. Click the export button and export the image to the images folder in your Framer project.
 
-
+**Making rectangles, circles or text exportable has no effect because it is assumed these types of layer will be created using code alone.**
