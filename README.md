@@ -208,3 +208,14 @@ This tells the plugin to include a reference to the image in the code it generat
 2. Click the export button and export the image to the images folder in your Framer project.
 
 **Making rectangles, circles or text exportable has no effect because it is assumed these types of layer will be created using code alone.**
+
+---
+
+**If you are using this plugin, please 'star' this project**. It's a simple way to help me see how many people are using it.
+
+If you ***love*** this plugin, why not shout me a coffee ☕️ via [PayPal](https://www.paypal.me/perrysmotors/5) to share the love!
+
+<a href="https://www.paypal.me/perrysmotors/5”>
+  <img width="160" height="41" src="https://user-images.githubusercontent.com/12557727/39295119-7e115bca-4935-11e8-9fe9-802d667ac22c.png" >
+</a>
+
