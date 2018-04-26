@@ -4,7 +4,7 @@
 A Sketch plugin that copies selected layers to the clipboard as code that can be pasted straight into a Framer prototype.
 
 - Copy one or more layers, or an entire artboard
-- Layers are copied in position 
+- Layers are copied in position
 - Rectangles, circles and text layers are drawn entirely in code*
 - Export @ 1x, @ 2x or @ 3x
 
@@ -15,7 +15,7 @@ A Sketch plugin that copies selected layers to the clipboard as code that can be
 
 ## Features
 - **Support for Nested Layers**: Copy Framer Code exports all nested layers inside any selected groups, adding the `parent` property to the sublayers.
-- **Export artboards**: Select an artboard to copy all of its contents. 
+- **Export artboards**: Select an artboard to copy all of its contents.
 - **Flatten groups** to a single layer by adding `*` to the end of the layer’s name.
 - **Hidden layers** are not imported.
 
@@ -24,7 +24,7 @@ Download or clone the repository, and double click `CopyFramerCode.sketchplugin`
 
 or...
 
-[![Install PLUGIN NAME with Sketchpacks](http://sketchpacks-com.s3.amazonaws.com/assets/badges/sketchpacks-badge-install.png "Install PLUGIN NAME with Sketchpacks")](https://sketchpacks.com/perrysmotors/copy-framer-code/install)
+[![Install Copy Framer Code with Sketchpacks](http://sketchpacks-com.s3.amazonaws.com/assets/badges/sketchpacks-badge-install.png "Install Copy Framer Code with Sketchpacks")](https://sketchpacks.com/perrysmotors/copy-framer-code/install)
 
 ## Usage
 
@@ -35,7 +35,7 @@ This plugin takes a different approach. It aims to recreate as much of your desi
 All it does is copy code to the clipboard. Here’s how to use it:
 
 1. Select the layers or artboard in Sketch you want to copy.
-2. If you want to export from Sketch @ 1x, select `Copy Framer Code > Copy @ 1x` from the Plugins menu. Select `Copy Framer Code > Copy @ 2x` to double the scale of your design, and `Copy Framer Code > Copy @ 3x` to scale up by three. 
+2. If you want to export from Sketch @ 1x, select `Copy Framer Code > Copy @ 1x` from the Plugins menu. Select `Copy Framer Code > Copy @ 2x` to double the scale of your design, and `Copy Framer Code > Copy @ 3x` to scale up by three.
 3. Paste the CoffeeScript code into Framer.
 
 ![copytoframer](https://cloud.githubusercontent.com/assets/12557727/25869296/bf5e85f6-34f7-11e7-92c4-508deec4f76e.gif)
@@ -150,7 +150,7 @@ Make sure there are no export settings set for the artboard.
 
 ### Symbols
 **The plugin cannot export the contents of symbols**. Only position, size and opacity are copied. If you want the plugin to export and any layers inside a symbol you will first need to detach the symbol:
- 
+
 ```
 symbol = new Layer
 	x: 248
@@ -184,7 +184,7 @@ combinedShape = new Layer
 - Line height
 - Character spacing
 
-A Sketch layer can have multiple fills, borders and shadows. This is not possible in Framer. When a layer has more than one of any of these style, only the top-most style is copied. 
+A Sketch layer can have multiple fills, borders and shadows. This is not possible in Framer. When a layer has more than one of any of these style, only the top-most style is copied.
 *Outside* and *centre* borders are converted to *inside* borders as this is all that Framer can handle.
 
 ## How include image assets
@@ -203,8 +203,18 @@ combinedShape = new Layer
 
 1. Select the layer in Sketch and click *Make exportable*.
 
-This tells the plugin to include a reference to the image in the code it generates. If you have set multiple export settings, the plugin will try to choose an export format that matches the scale you are exporting at. Failing that it will use the first in the list. Adding export settings to rectangles, circles and text layers has no effect as it is assumed these will be drawn using native code. 
+This tells the plugin to include a reference to the image in the code it generates. If you have set multiple export settings, the plugin will try to choose an export format that matches the scale you are exporting at. Failing that it will use the first in the list. Adding export settings to rectangles, circles and text layers has no effect as it is assumed these will be drawn using native code.
 
 2. Click the export button and export the image to the images folder in your Framer project.
 
 **Making rectangles, circles or text exportable has no effect because it is assumed these types of layer will be created using code alone.**
+
+---
+
+**If you are using this plugin, please 'star' this project**. It's a simple way to help me see how many people are using it.
+
+If you ***love*** this plugin, why not shout me a coffee ☕️ via [PayPal](https://www.paypal.me/perrysmotors/5) to share the love!
+
+<a href="https://www.paypal.me/perrysmotors/5">
+  <img width="160" height="41" src="https://user-images.githubusercontent.com/12557727/39295119-7e115bca-4935-11e8-9fe9-802d667ac22c.png" >
+</a>
