@@ -24,7 +24,7 @@ Download or clone the repository, and double click `CopyFramerCode.sketchplugin`
 
 or...
 
-[![Install PLUGIN NAME with Sketchpacks](http://sketchpacks-com.s3.amazonaws.com/assets/badges/sketchpacks-badge-install.png "Install PLUGIN NAME with Sketchpacks")](https://sketchpacks.com/perrysmotors/copy-framer-code/install)
+[![Install Copy Framer Code with Sketchpacks](http://sketchpacks-com.s3.amazonaws.com/assets/badges/sketchpacks-badge-install.png "Install PLUGIN NAME with Sketchpacks")](https://sketchpacks.com/perrysmotors/copy-framer-code/install)
 
 ## Usage
 
@@ -215,4 +215,4 @@ This tells the plugin to include a reference to the image in the code it generat
 
 If you ***love*** this plugin, why not shout me a coffee ☕️ via [PayPal](https://www.paypal.me/perrysmotors/5) to share the love!
 
-<a href="https://www.paypal.me/perrysmotors/5”><img width="160" height="41" src="https://user-images.githubusercontent.com/12557727/39295119-7e115bca-4935-11e8-9fe9-802d667ac22c.png"></a>
+[![Shout me a coffee!](https://user-images.githubusercontent.com/12557727/39295119-7e115bca-4935-11e8-9fe9-802d667ac22c.png)](https://www.paypal.me/perrysmotors/5)
