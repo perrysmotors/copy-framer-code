@@ -10,12 +10,14 @@
     {
       "name": "Copy @ 2x",
       "identifier": "copy-framer-code.copyAt2x",
-      "script": "./copy-framer-code.js"
+      "script": "./copy-framer-code.js",
+      "handler": "onCopyAt2x"
     },
     {
       "name": "Copy @ 3x",
       "identifier": "copy-framer-code.copyAt3x",
-      "script": "./copy-framer-code.js"
+      "script": "./copy-framer-code.js",
+      "handler": "onCopyAt3x"
     }
   ],
   "menu": {
