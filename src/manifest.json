@@ -1,0 +1,31 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sketch-hq/SketchAPI/develop/docs/sketch-plugin-manifest-schema.json",
+  "icon": "icon.png",
+  "commands": [
+    {
+      "name": "Copy @ 1x",
+      "identifier": "copy-framer-code.copyAt1x",
+      "script": "./copy-framer-code.js"
+    },
+    {
+      "name": "Copy @ 2x",
+      "identifier": "copy-framer-code.copyAt2x",
+      "script": "./copy-framer-code.js",
+      "handler": "onCopyAt2x"
+    },
+    {
+      "name": "Copy @ 3x",
+      "identifier": "copy-framer-code.copyAt3x",
+      "script": "./copy-framer-code.js",
+      "handler": "onCopyAt3x"
+    }
+  ],
+  "menu": {
+    "title": "Copy Framer Code",
+    "items": [
+      "copy-framer-code.copyAt1x",
+      "copy-framer-code.copyAt2x",
+      "copy-framer-code.copyAt3x"
+    ]
+  }
+}
