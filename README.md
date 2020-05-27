@@ -20,7 +20,9 @@ A Sketch plugin that copies selected layers to the clipboard as code that can be
 - **Hidden layers** are not imported.
 
 ## Install
-Download or clone the repository, and double click `CopyFramerCode.sketchplugin`.
+* [Download](../../releases/latest/download/copy-framer-code.sketchplugin.zip) the latest release of the plugin
+* Un-zip
+* Double-click on `copy-framer-code.sketchplugin`
 
 or...
 
