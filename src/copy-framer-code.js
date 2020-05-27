@@ -64,7 +64,7 @@ var processLayerRecursively = function (layer, parent) {
         name = uniqueLayerName(name)
         framerObject.name = name
 
-        if (layer.isArtboard) {
+        if (layer.type === "Artboard") {
             framerObject.x = 0
             framerObject.y = 0
         } else if (parent == null) {
@@ -78,7 +78,7 @@ var processLayerRecursively = function (layer, parent) {
 
         var isFlattenedGroup = sketchObject.name().slice(-1) == "*"
 
-        if (layer.isGroup) {
+        if (layer.type === "Group") {
             if (isFlattenedGroup) {
                 Object.assign(framerObject, layerCode(sketchObject))
                 framerLayers.push(framerObject)
@@ -91,7 +91,7 @@ var processLayerRecursively = function (layer, parent) {
                     processLayerRecursively(layer, name)
                 })
             }
-        } else if (layer.isShape) {
+        } else if (layer.type === "ShapePath") {
             if (isRectangle(sketchObject) || isCircle(sketchObject)) {
                 Object.assign(
                     framerObject,
@@ -102,7 +102,7 @@ var processLayerRecursively = function (layer, parent) {
             }
 
             framerLayers.push(framerObject)
-        } else if (layer.isText) {
+        } else if (layer.type === "Text") {
             framerObject.layerType = "TextLayer"
             Object.assign(framerObject, textLayerCode(sketchObject))
             framerLayers.push(framerObject)
