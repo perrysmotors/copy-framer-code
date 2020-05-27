@@ -1,6 +1,6 @@
 {
   "name": "copy-framer-code",
-  "description": "A Sketch plugin that copies any selected layer to the clipboard as code that can be pasted straight into a Framer prototype.",
+  "description": "Copy any selected layer to the clipboard as code that can be pasted straight into a Framer Classic prototype.",
   "version": "3.1.1",
   "engines": {
     "sketch": ">=49.0"
