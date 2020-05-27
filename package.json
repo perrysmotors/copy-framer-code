@@ -1,7 +1,7 @@
 {
   "name": "copy-framer-code",
   "description": "Copy any selected layer to the clipboard as code that can be pasted straight into a Framer Classic prototype.",
-  "version": "3.1.1",
+  "version": "4.0.0",
   "engines": {
     "sketch": ">=49.0"
   },
