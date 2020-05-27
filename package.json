@@ -1,0 +1,32 @@
+{
+  "name": "copy-framer-code",
+  "description": "A Sketch plugin that copies any selected layer to the clipboard as code that can be pasted straight into a Framer prototype.",
+  "version": "3.1.1",
+  "engines": {
+    "sketch": ">=49.0"
+  },
+  "skpm": {
+    "name": "copy-framer-code",
+    "manifest": "src/manifest.json",
+    "main": "copy-framer-code.sketchplugin",
+    "assets": [
+      "assets/**/*"
+    ],
+    "sketch-assets-file": "sketch-assets/icons.sketch"
+  },
+  "scripts": {
+    "build": "skpm-build",
+    "watch": "skpm-build --watch",
+    "start": "skpm-build --watch --run",
+    "postinstall": "npm run build && skpm-link"
+  },
+  "devDependencies": {
+    "@skpm/builder": "^0.7.0"
+  },
+  "author": "Giles Perry <giles@gilesperry.info>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/perrysmotors/copy-framer-code.git"
+  },
+  "license": "Apache-2.0"
+}
