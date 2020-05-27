@@ -6,7 +6,7 @@
     "sketch": ">=49.0"
   },
   "skpm": {
-    "name": "copy-framer-code",
+    "name": "Copy Framer Code",
     "manifest": "src/manifest.json",
     "main": "copy-framer-code.sketchplugin",
     "assets": [
