@@ -5,17 +5,17 @@
     {
       "name": "Copy @ 1x",
       "identifier": "copy-framer-code.copyAt1x",
-      "script": "./my-command.js"
+      "script": "./copy-framer-code.js"
     },
     {
       "name": "Copy @ 2x",
       "identifier": "copy-framer-code.copyAt2x",
-      "script": "./my-command.js"
+      "script": "./copy-framer-code.js"
     },
     {
       "name": "Copy @ 3x",
       "identifier": "copy-framer-code.copyAt3x",
-      "script": "./my-command.js"
+      "script": "./copy-framer-code.js"
     }
   ],
   "menu": {
