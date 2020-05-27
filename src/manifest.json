@@ -3,15 +3,27 @@
   "icon": "icon.png",
   "commands": [
     {
-      "name": "my-command",
-      "identifier": "copy-framer-code.my-command-identifier",
+      "name": "Copy @ 1x",
+      "identifier": "copy-framer-code.copyAt1x",
+      "script": "./my-command.js"
+    },
+    {
+      "name": "Copy @ 2x",
+      "identifier": "copy-framer-code.copyAt2x",
+      "script": "./my-command.js"
+    },
+    {
+      "name": "Copy @ 3x",
+      "identifier": "copy-framer-code.copyAt3x",
       "script": "./my-command.js"
     }
   ],
   "menu": {
-    "title": "copy-framer-code",
+    "title": "Copy Framer Code",
     "items": [
-      "copy-framer-code.my-command-identifier"
+      "copy-framer-code.copyAt1x",
+      "copy-framer-code.copyAt2x",
+      "copy-framer-code.copyAt3x"
     ]
   }
 }
