@@ -78,7 +78,7 @@ var processLayerRecursively = function (layer, parent) {
 
         var isFlattenedGroup = sketchObject.name().slice(-1) == "*"
 
-        if (layer.type === "Group") {
+        if (layer.type === "Group" || layer.type === "Artboard") {
             if (isFlattenedGroup) {
                 Object.assign(framerObject, layerCode(sketchObject))
                 framerLayers.push(framerObject)
@@ -87,16 +87,13 @@ var processLayerRecursively = function (layer, parent) {
                 Object.assign(framerObject, layerCode(sketchObject))
                 framerLayers.push(framerObject)
 
-                layer.iterate(function (layer) {
+                layer.layers.forEach(function (layer) {
                     processLayerRecursively(layer, name)
                 })
             }
         } else if (layer.type === "ShapePath") {
-            if (isRectangle(sketchObject) || isCircle(sketchObject)) {
-                Object.assign(
-                    framerObject,
-                    layerWithPropertiesCode(sketchObject)
-                )
+            if (layer.shapeType === "Rectangle" || layer.shapeType === "Oval") {
+                Object.assign(framerObject, layerWithPropertiesCode(layer))
             } else {
                 Object.assign(framerObject, layerCode(sketchObject))
             }
@@ -116,12 +113,13 @@ var processLayerRecursively = function (layer, parent) {
 ////////////////////////////////////////////////////////////////////////////////
 
 function layerWithPropertiesCode(layer) {
+    let sketchObject = layer.sketchObject
     var framerObject = {}
 
-    framerObject.width = layer.frame().width() * scale
-    framerObject.height = layer.frame().height() * scale
+    framerObject.width = sketchObject.frame().width() * scale
+    framerObject.height = sketchObject.frame().height() * scale
 
-    var fill = topFill(layer.style())
+    var fill = topFill(sketchObject.style())
     if (fill == null) {
         framerObject.backgroundColor = '"transparent"'
     } else {
@@ -129,23 +127,23 @@ function layerWithPropertiesCode(layer) {
     }
 
     var borderRadius
-    if (isCircle(layer)) {
+    if (layer.shapeType === "Oval") {
         borderRadius = framerObject.width / 2
     } else {
-        borderRadius = layer.layers().firstObject().cornerRadiusFloat() * scale
+        borderRadius = layer.points[0].cornerRadius * scale
     }
 
     if (borderRadius != 0) {
         framerObject.borderRadius = borderRadius
     }
 
-    var border = topBorder(layer.style())
+    var border = topBorder(sketchObject.style())
     if (border != null) {
         framerObject.borderColor = rgbaCode(border.color())
         framerObject.borderWidth = border.thickness() * scale
     }
 
-    var shadow = topShadow(layer.style())
+    var shadow = topShadow(sketchObject.style())
     if (shadow != null) {
         framerObject.shadowColor = rgbaCode(shadow.color())
         framerObject.shadowX = shadow.offsetX() * scale
@@ -154,7 +152,7 @@ function layerWithPropertiesCode(layer) {
         framerObject.shadowSpread = shadow.spread() * scale
     }
 
-    var opacity = layer.style().contextSettings().opacity()
+    var opacity = sketchObject.style().contextSettings().opacity()
     if (opacity != 1) {
         framerObject.opacity = opacity
     }
@@ -347,30 +345,6 @@ function topShadow(style) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
-function isRectangle(layer) {
-    var layerCount = layer.layers().count()
-    var layerClass = layer.layers()[0].class()
-
-    if (layerCount == 1 && layerClass == MSRectangleShape) {
-        return true
-    } else {
-        return false
-    }
-}
-
-function isCircle(layer) {
-    var layerCount = layer.layers().count()
-    var layerClass = layer.layers()[0].class()
-    var width = layer.frame().width()
-    var height = layer.frame().height()
-
-    if (layerCount == 1 && layerClass == MSOvalShape && width == height) {
-        return true
-    } else {
-        return false
-    }
-}
 
 function rgbaCode(colour) {
     var red = Math.round(colour.red() * 255)
